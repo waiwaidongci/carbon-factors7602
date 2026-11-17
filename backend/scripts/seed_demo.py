@@ -1,9 +1,9 @@
 import json,random
-from src.config.database import Base,engine,Session
+from src.config.database import create_all,Session
 from src.config.settings import CONFIG
 from src.models.identity import User
 from src.models.source import Source,Policy,Period
-from src.models import run
+from src.models import run,settlement
 from src.utils.security import password_hash
 from src.services.validation import validate_source
 
@@ -14,7 +14,7 @@ def demo_rows():
  return rows
 
 def seed():
- Base.metadata.create_all(engine)
+ create_all()
  with Session() as db:
   for role in ('admin','analyst','viewer'):
    if not db.query(User).filter_by(email=role+'@demo.local').first():db.add(User(email=role+'@demo.local',role=role,password=password_hash('Demo2026!')))
